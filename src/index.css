@@ -1,0 +1,98 @@
+@import "@fontsource/fraunces/400.css";
+@import "@fontsource/fraunces/500.css";
+@import "@fontsource/fraunces/400-italic.css";
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/500.css";
+@import "@fontsource/inter/600.css";
+@import "@fontsource/ibm-plex-mono/400.css";
+@import "@fontsource/ibm-plex-mono/500.css";
+
+@import "tailwindcss";
+
+/* ---------- Design tokens (Tailwind v4 — no tailwind.config.js needed) ---------- */
+@theme {
+  --color-navy-900: #0A1F44;
+  --color-navy-700: #14325E;
+  --color-navy-500: #1E4272;
+
+  --color-water-600: #0E7CA8;
+  --color-water-500: #1B9AD6;
+
+  --color-cyan-400: #48C5E8;
+
+  --color-mist-50:  #F4F7FA;
+  --color-mist-100: #E8EEF4;
+  --color-mist-200: #D6E0EA;
+
+  --font-display: "Fraunces", Georgia, serif;
+  --font-sans:    "Inter", system-ui, sans-serif;
+  --font-mono:    "IBM Plex Mono", ui-monospace, monospace;
+
+  --tracking-label: 0.14em;
+}
+
+/* ---------- Base ---------- */
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    background-color: #fff;
+    color: var(--color-navy-900);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "ss01", "cv11";
+  }
+
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+  }
+
+  ::selection {
+    background: var(--color-water-500);
+    color: #fff;
+  }
+
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible {
+    outline: 2px solid var(--color-water-500);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* ---------- Components ---------- */
+@layer components {
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-label);
+    color: var(--color-water-600);
+  }
+
+  .blueprint-grid {
+    background-image:
+      linear-gradient(to right, rgba(10, 31, 68, 0.06) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(10, 31, 68, 0.06) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+}
