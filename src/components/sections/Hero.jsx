@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import client1Img from '../../assets/client-1.jpeg';
 import client2Img from '../../assets/client-2.jpeg';
 import client3Img from '../../assets/client-3.jpeg';
@@ -22,16 +22,10 @@ export default function Hero() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const handleContactScroll = (e) => {
-    e.preventDefault();
-    navigateToSection(navigate, '/', location.pathname, 'contact');
-  };
-
   return (
     <section className="relative overflow-hidden bg-white">
       <div className="grid grid-cols-1 items-stretch lg:grid-cols-[58fr_42fr]">
         
-        {/* LEFT — Text Column */}
         <div className="flex flex-col justify-center px-5 py-16 sm:px-8 lg:px-16 lg:py-24 xl:px-24">
           <div className="flex items-center gap-3">
             <div className="h-[2px] w-16 bg-water-500" />
@@ -76,18 +70,29 @@ export default function Hero() {
             </Button>
           </div>
 
-          {/* Tertiary Link to Journey */}
-          <a
-            href="#parcours"
-            onClick={(e) => {
-              e.preventDefault();
-              navigateToSection(navigate, '/', location.pathname, 'parcours');
-            }}
-            className="mt-6 inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-label text-navy-700 hover:text-water-600 w-fit"
-          >
-            Voir comment nous travaillons
-            <span aria-hidden="true">↓</span>
-          </a>
+          {/* Tertiary Links */}
+          <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3">
+            <a
+              href="#parcours"
+              onClick={(e) => {
+                e.preventDefault();
+                navigateToSection(navigate, '/', location.pathname, 'parcours');
+              }}
+              className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-label text-navy-700 hover:text-water-600 w-fit"
+            >
+              Voir comment nous travaillons
+              <span aria-hidden="true">↓</span>
+            </a>
+
+            {/* NEW: ÉQUIPE LINK */}
+            <Link
+              to="/membres"
+              className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-label text-navy-700 hover:text-water-600 w-fit"
+            >
+              Voir notre équipe
+              <span aria-hidden="true">→</span>
+            </Link>
+          </div>
 
           {/* Facts strip */}
           <div className="mt-12 flex flex-col gap-6 border-t border-mist-200 pt-6 sm:flex-row sm:items-center sm:justify-between">
@@ -108,7 +113,6 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* RIGHT — Real media column */}
         <div className="relative w-full overflow-hidden bg-mist-100">
           <div className="relative aspect-[4/5] w-full lg:aspect-auto lg:h-full lg:min-h-[560px]">
             <img

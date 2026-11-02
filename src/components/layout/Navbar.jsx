@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { navigateToSection } from '../../lib/navigateToSection';
 import { SITE, telLink, waLink } from '../../lib/site';
@@ -8,7 +8,6 @@ import Logo from '../primitives/Logo';
 import PhoneIcon from '../primitives/PhoneIcon';
 import WhatsAppIcon from '../primitives/WhatsAppIcon';
 
-// Sections tracked for the scroll-underline
 const SECTIONS = ['parcours', 'services', 'assistant', 'contact'];
 
 function NavItem({ to, end, children }) {
@@ -55,9 +54,30 @@ function SectionLink({ sectionId, activeSection, onClick, children }) {
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
   const location = useLocation();
   const navigate = useNavigate();
   const activeSection = useActiveSection(location.pathname, SECTIONS);
+
+  // Close menus on route change
+  useEffect(() => {
+    setOpen(false);
+    setDropdownOpen(false);
+  }, [location.pathname, location.hash]);
+
+  // Close dropdown on click outside
+  useEffect(() => {
+    if (!dropdownOpen) return;
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [dropdownOpen]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 80);
@@ -65,8 +85,6 @@ export default function Navbar() {
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
-
-  useEffect(() => { setOpen(false); }, [location.pathname, location.hash]);
 
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : '';
@@ -76,6 +94,7 @@ export default function Navbar() {
   const handleSectionClick = (e, sectionId) => {
     e.preventDefault();
     setOpen(false);
+    setDropdownOpen(false);
     requestAnimationFrame(() => {
       navigateToSection(navigate, '/', location.pathname, sectionId);
     });
@@ -118,16 +137,6 @@ export default function Navbar() {
               {isHome && <span className="absolute inset-x-0 -bottom-0.5 h-[2px] bg-water-500" />}
             </a>
 
-            <NavItem to="/a-propos">À propos</NavItem>
-
-            <SectionLink
-              sectionId="parcours"
-              activeSection={activeSection}
-              onClick={(e) => handleSectionClick(e, 'parcours')}
-            >
-              Parcours
-            </SectionLink>
-
             <SectionLink
               sectionId="services"
               activeSection={activeSection}
@@ -136,8 +145,6 @@ export default function Navbar() {
               Services
             </SectionLink>
 
-            <NavItem to="/realisations">Réalisations</NavItem>
-
             <SectionLink
               sectionId="assistant"
               activeSection={activeSection}
@@ -145,6 +152,47 @@ export default function Navbar() {
             >
               Assistant
             </SectionLink>
+
+            {/* CLICK-TOGGLE DROPDOWN */}
+            <div className="relative" ref={dropdownRef}>
+              <button
+                onClick={() => setDropdownOpen((v) => !v)}
+                aria-expanded={dropdownOpen}
+                aria-haspopup="true"
+                className={`flex items-center gap-1 py-1 text-sm font-medium transition-colors ${
+                  dropdownOpen ? 'text-navy-900' : 'text-navy-700 hover:text-water-600'
+                }`}
+              >
+                Explorer
+                <span className={`text-[10px] transition-transform duration-200 ${dropdownOpen ? 'rotate-180' : ''}`}>
+                  ▼
+                </span>
+              </button>
+
+              {dropdownOpen && (
+                <div className="absolute top-full left-0 mt-2 w-56 bg-white border border-mist-200 shadow-lg py-2 flex flex-col">
+                  <NavLink to="/a-propos" className="px-4 py-2 text-sm text-navy-700 hover:bg-mist-50 hover:text-water-600 transition-colors">
+                    À propos
+                  </NavLink>
+                  <a
+                    href="/#parcours"
+                    onClick={(e) => handleSectionClick(e, 'parcours')}
+                    className="px-4 py-2 text-sm text-navy-700 hover:bg-mist-50 hover:text-water-600 transition-colors"
+                  >
+                    Notre parcours
+                  </a>
+                  <NavLink to="/realisations" className="px-4 py-2 text-sm text-navy-700 hover:bg-mist-50 hover:text-water-600 transition-colors">
+                    Réalisations
+                  </NavLink>
+                  <NavLink to="/membres" className="px-4 py-2 text-sm text-navy-700 hover:bg-mist-50 hover:text-water-600 transition-colors">
+                    L'équipe
+                  </NavLink>
+                  <NavLink to="/blog" className="px-4 py-2 text-sm text-navy-700 hover:bg-mist-50 hover:text-water-600 transition-colors">
+                    Témoignages
+                  </NavLink>
+                </div>
+              )}
+            </div>
 
             <SectionLink
               sectionId="contact"
@@ -214,40 +262,21 @@ export default function Navbar() {
                 <span className="font-display text-3xl text-white group-hover:text-cyan-400">Accueil</span>
               </a>
 
-              <NavLink to="/a-propos" className="group flex items-baseline gap-4 border-b border-navy-700 py-5">
-                <span className="font-mono text-[11px] tracking-label text-cyan-400">02</span>
-                <span className="font-display text-3xl text-white group-hover:text-cyan-400">À propos</span>
-              </NavLink>
-
-              <a
-                href="/#parcours"
-                onClick={(e) => handleSectionClick(e, 'parcours')}
-                className="group flex items-baseline gap-4 border-b border-navy-700 py-5"
-              >
-                <span className="font-mono text-[11px] tracking-label text-cyan-400">03</span>
-                <span className="font-display text-3xl text-white group-hover:text-cyan-400">Parcours</span>
-              </a>
-
               <a
                 href="/#services"
                 onClick={(e) => handleSectionClick(e, 'services')}
                 className="group flex items-baseline gap-4 border-b border-navy-700 py-5"
               >
-                <span className="font-mono text-[11px] tracking-label text-cyan-400">04</span>
+                <span className="font-mono text-[11px] tracking-label text-cyan-400">02</span>
                 <span className="font-display text-3xl text-white group-hover:text-cyan-400">Services</span>
               </a>
-
-              <NavLink to="/realisations" className="group flex items-baseline gap-4 border-b border-navy-700 py-5">
-                <span className="font-mono text-[11px] tracking-label text-cyan-400">05</span>
-                <span className="font-display text-3xl text-white group-hover:text-cyan-400">Réalisations</span>
-              </NavLink>
 
               <a
                 href="/#assistant"
                 onClick={(e) => handleSectionClick(e, 'assistant')}
                 className="group flex items-baseline gap-4 border-b border-navy-700 py-5"
               >
-                <span className="font-mono text-[11px] tracking-label text-cyan-400">06</span>
+                <span className="font-mono text-[11px] tracking-label text-cyan-400">03</span>
                 <span className="font-display text-3xl text-white group-hover:text-cyan-400">Assistant</span>
               </a>
 
@@ -256,9 +285,42 @@ export default function Navbar() {
                 onClick={(e) => handleSectionClick(e, 'contact')}
                 className="group flex items-baseline gap-4 border-b border-navy-700 py-5"
               >
-                <span className="font-mono text-[11px] tracking-label text-cyan-400">07</span>
+                <span className="font-mono text-[11px] tracking-label text-cyan-400">04</span>
                 <span className="font-display text-3xl text-white group-hover:text-cyan-400">Devis</span>
               </a>
+
+              <div className="pt-6 pb-2">
+                <p className="font-mono text-[11px] uppercase tracking-label text-cyan-400/60">Explorer</p>
+              </div>
+
+              <NavLink to="/a-propos" className="group flex items-baseline gap-4 border-b border-navy-700 py-5">
+                <span className="font-mono text-[11px] tracking-label text-cyan-400">05</span>
+                <span className="font-display text-2xl text-white/90 group-hover:text-cyan-400">À propos</span>
+              </NavLink>
+
+              <a
+                href="/#parcours"
+                onClick={(e) => handleSectionClick(e, 'parcours')}
+                className="group flex items-baseline gap-4 border-b border-navy-700 py-5"
+              >
+                <span className="font-mono text-[11px] tracking-label text-cyan-400">06</span>
+                <span className="font-display text-2xl text-white/90 group-hover:text-cyan-400">Parcours</span>
+              </a>
+
+              <NavLink to="/realisations" className="group flex items-baseline gap-4 border-b border-navy-700 py-5">
+                <span className="font-mono text-[11px] tracking-label text-cyan-400">07</span>
+                <span className="font-display text-2xl text-white/90 group-hover:text-cyan-400">Réalisations</span>
+              </NavLink>
+
+              <NavLink to="/membres" className="group flex items-baseline gap-4 border-b border-navy-700 py-5">
+                <span className="font-mono text-[11px] tracking-label text-cyan-400">08</span>
+                <span className="font-display text-2xl text-white/90 group-hover:text-cyan-400">Équipe</span>
+              </NavLink>
+
+              <NavLink to="/blog" className="group flex items-baseline gap-4 border-b border-navy-700 py-5">
+                <span className="font-mono text-[11px] tracking-label text-cyan-400">09</span>
+                <span className="font-display text-2xl text-white/90 group-hover:text-cyan-400">Témoignages</span>
+              </NavLink>
             </nav>
 
             <div className="mt-auto flex flex-col gap-3 pt-10">

@@ -79,7 +79,7 @@ export default function Contact() {
 
           {/* LEFT — Contact Info (Persistent) */}
           <div className="lg:col-span-5">
-            <SectionLabel index="08">Contact & devis</SectionLabel>
+            <SectionLabel index="10">Contact & devis</SectionLabel>
             <h2 className="mt-6 text-[clamp(1.75rem,3.2vw,2.75rem)] leading-[1.1] text-navy-900">
               Parlons de votre projet.
             </h2>

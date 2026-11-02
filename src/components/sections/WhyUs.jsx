@@ -37,7 +37,7 @@ export default function WhyUs() {
 
           {/* Left — statement */}
           <div className="lg:col-span-5">
-            <SectionLabel index="07">Pourquoi nous choisir</SectionLabel>
+            <SectionLabel index="08">Pourquoi nous choisir</SectionLabel>
 
             <h2 className="mt-6 text-[clamp(1.75rem,3.2vw,2.75rem)] leading-[1.1] text-navy-900">
               La méthode avant l'intervention.

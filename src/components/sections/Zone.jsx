@@ -19,7 +19,7 @@ export default function Zone() {
 
           {/* Left — narrative */}
           <div className="lg:col-span-6">
-            <SectionLabel index="09">Zone d'intervention</SectionLabel>
+            <SectionLabel index="11">Zone d'intervention</SectionLabel>
 
             <h2 className="mt-6 text-[clamp(1.75rem,3.2vw,2.75rem)] leading-[1.1] text-navy-900">
               Basés à {SITE.zone},<br />

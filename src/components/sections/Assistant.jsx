@@ -65,7 +65,7 @@ export default function Assistant() {
 
           {/* Left: Context */}
           <div className="lg:col-span-5 mb-10 lg:mb-0 lg:sticky lg:top-28">
-            <SectionLabel index="06">Assistant de service</SectionLabel>
+            <SectionLabel index="07">Assistant de service</SectionLabel>
             <h2 className="mt-6 text-[clamp(1.75rem,3.2vw,2.75rem)] leading-[1.1] text-navy-900">
               Quel est votre besoin ?
             </h2>

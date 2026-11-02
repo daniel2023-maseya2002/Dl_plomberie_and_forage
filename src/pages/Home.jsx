@@ -2,12 +2,14 @@ import Footer from '../components/layout/Footer';
 import MobileActionBar from '../components/layout/MobileActionBar';
 import Navbar from '../components/layout/Navbar';
 import Assistant from '../components/sections/Assistant';
-import Contact from '../components/sections/Contact'; // The Quote Builder
+import Contact from '../components/sections/Contact';
 import Founder from '../components/sections/Founder';
 import Hero from '../components/sections/Hero';
 import Journey from '../components/sections/Journey';
 import Realisations from '../components/sections/Realisations';
 import Services from '../components/sections/Services';
+import TeamPreview from '../components/sections/TeamPreview';
+import TestimonialsPreview from '../components/sections/TestimonialsPreview'; // <-- NEW
 import WhyUs from '../components/sections/WhyUs';
 import Zone from '../components/sections/Zone';
 
@@ -20,9 +22,11 @@ export default function Home() {
         <Journey />
         <Services />
         <Founder />
+        <TeamPreview />
         <Realisations />
         <Assistant />
         <WhyUs />
+        <TestimonialsPreview /> {/* <-- NEW */}
         <Contact />
         <Zone />
       </main>

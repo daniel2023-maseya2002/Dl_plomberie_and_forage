@@ -14,17 +14,20 @@ export default function Realisations() {
 
   return (
     <section id="realisations" className="bg-white scroll-mt-20 w-full overflow-hidden">
+      
       <div className="w-full px-5 sm:px-8 lg:px-12 py-20 lg:py-28">
         <header className="grid grid-cols-1 gap-6 pb-12 lg:grid-cols-12 lg:gap-12 lg:pb-16">
           <div className="lg:col-span-7">
-            <SectionLabel index="05">Réalisations</SectionLabel>
+            <SectionLabel index="06">Réalisations</SectionLabel>
             <h2 className="mt-6 text-[clamp(1.75rem,3.2vw,2.75rem)] leading-[1.1] text-navy-900">
               Des chantiers réels, à Kinshasa.
             </h2>
           </div>
           <div className="flex items-end lg:col-span-5">
             <p className="max-w-prose text-[15px] leading-relaxed text-navy-700">
-              Sélection de travaux réalisés — plomberie, forage et installations sanitaires. Toutes les photos proviennent de chantiers de l'entreprise.
+              Sélection de travaux réalisés — plomberie, forage et
+              installations sanitaires. Toutes les photos proviennent de
+              chantiers de l'entreprise.
             </p>
           </div>
         </header>
@@ -33,7 +36,10 @@ export default function Realisations() {
 
         <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-6">
           {rest.map((p, i) => (
-            <div key={p.id} className={i < 3 ? 'lg:col-span-2' : 'lg:col-span-3'}>
+            <div
+              key={p.id}
+              className={i < 3 ? 'lg:col-span-2' : 'lg:col-span-3'}
+            >
               <ProjectTile project={p} onMediaClick={setActiveProject} />
             </div>
           ))}

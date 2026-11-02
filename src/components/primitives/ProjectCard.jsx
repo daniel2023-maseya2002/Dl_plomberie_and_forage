@@ -1,4 +1,3 @@
-
 const aspectClass = {
   landscape: 'aspect-[4/3]',
   portrait:  'aspect-[4/5]',
@@ -6,6 +5,9 @@ const aspectClass = {
 };
 
 export default function ProjectCard({ project, onMediaClick }) {
+  // Check if the cover is a video
+  const isVideoCover = project.cover?.toString().endsWith('.mp4');
+
   return (
     <article id={project.id} className="scroll-mt-24 group">
       <div 
@@ -14,27 +16,19 @@ export default function ProjectCard({ project, onMediaClick }) {
       >
         <div className={`relative w-full overflow-hidden bg-mist-100 ${aspectClass[project.aspect] || aspectClass.square}`}>
           
-          {project.mediaType === 'video' && project.mediaUrl ? (
+          {/* Render Video Cover OR Image Cover */}
+          {isVideoCover ? (
             <video 
-              src={project.mediaUrl} 
+              src={project.cover} 
               muted 
               loop 
               playsInline 
-              className="h-full w-full object-cover"
-              onPlay={(e) => {
-                const promise = e.target.play();
-                if (promise !== undefined) {
-                  promise.catch(() => {});
-                }
-              }}
+              autoPlay
+              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
             />
-          ) : project.mediaType === 'audio' ? (
-            <div className="flex h-full w-full items-center justify-center bg-navy-900 text-white">
-              <span className="text-4xl">🎵</span>
-            </div>
-          ) : project.image ? (
+          ) : project.cover || project.image ? (
             <img
-              src={project.image}
+              src={project.cover || project.image}
               alt={project.title}
               className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
               loading="lazy"
@@ -52,9 +46,10 @@ export default function ProjectCard({ project, onMediaClick }) {
             </div>
           )}
           
-          {(project.mediaType === 'video' || project.mediaType === 'audio') && (
+          {/* Video/Audio Badge */}
+          {(project.mediaType === 'video' || project.mediaType === 'audio' || isVideoCover) && (
             <div className="absolute bottom-4 right-4 bg-navy-900/90 px-3 py-1.5 text-white rounded text-[10px] font-mono tracking-wider">
-              {project.mediaType === 'video' ? '▶ Vidéo' : '🎵 Audio'}
+              {project.mediaType === 'audio' ? '🎵 Audio' : '▶ Vidéo'}
             </div>
           )}
         </div>
@@ -65,11 +60,11 @@ export default function ProjectCard({ project, onMediaClick }) {
           {project.title}
         </h3>
         <span className="shrink-0 font-mono text-[10px] uppercase tracking-label text-water-600">
-          {project.type}
+          {project.type || project.category}
         </span>
       </div>
       <p className="mt-1 font-mono text-[10px] uppercase tracking-label text-navy-700/70">
-        {project.location}
+        {project.location || project.commune}
       </p>
       {project.description && (
         <p className="mt-3 max-w-prose text-[14px] leading-relaxed text-navy-700">

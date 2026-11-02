@@ -7,6 +7,9 @@ const aspectClass = {
 };
 
 export function FeatureProject({ project, onMediaClick }) {
+  // Check if the cover is a video
+  const isVideoCover = project.cover?.toString().endsWith('.mp4');
+
   return (
     <article className="grid grid-cols-1 gap-0 overflow-hidden border border-mist-200 lg:grid-cols-12">
       <div className="lg:col-span-7">
@@ -14,13 +17,15 @@ export function FeatureProject({ project, onMediaClick }) {
           className="relative aspect-[4/3] w-full cursor-pointer overflow-hidden bg-mist-100 group" 
           onClick={() => onMediaClick?.(project)}
         >
-          {/* Conditionally render Video, Audio, or Image */}
-          {project.mediaType === 'video' && project.mediaUrl ? (
-            <video src={project.mediaUrl} muted loop autoPlay playsInline className="h-full w-full object-cover" />
-          ) : project.mediaType === 'audio' ? (
-            <div className="flex h-full w-full items-center justify-center bg-navy-900 text-white">
-              <span className="font-mono text-lg tracking-widest uppercase">🎵 Audio</span>
-            </div>
+          {isVideoCover ? (
+            <video 
+              src={project.cover} 
+              muted 
+              loop 
+              playsInline 
+              autoPlay
+              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            />
           ) : project.image ? (
             <img
               src={project.image}
@@ -35,8 +40,8 @@ export function FeatureProject({ project, onMediaClick }) {
           )}
           
           {/* Play Button Overlay for Videos */}
-          {project.mediaType === 'video' && (
-            <div className="absolute inset-0 flex items-center justify-center bg-navy-900/20">
+          {isVideoCover && (
+            <div className="absolute inset-0 flex items-center justify-center bg-navy-900/20 pointer-events-none">
               <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm text-white">
                 ▶
               </div>
@@ -64,7 +69,7 @@ export function FeatureProject({ project, onMediaClick }) {
             {project.location}
           </span>
           <Link
-            to={`/realisations#${project.id}`}
+            to={`/realisations/${project.slug}`}
             className="font-mono text-[10px] uppercase tracking-label text-water-600 hover:text-navy-900"
           >
             Voir →
@@ -76,18 +81,22 @@ export function FeatureProject({ project, onMediaClick }) {
 }
 
 export function ProjectTile({ project, onMediaClick }) {
+  const isVideo = project.image?.toString().endsWith('.mp4');
+
   return (
     <article className="group">
       <div className="cursor-pointer" onClick={() => onMediaClick?.(project)}>
         <div className={`relative w-full overflow-hidden bg-mist-100 ${aspectClass[project.aspect] || aspectClass.square}`}>
           
-          {/* Conditionally render Video, Audio, or Image */}
-          {project.mediaType === 'video' && project.mediaUrl ? (
-            <video src={project.mediaUrl} muted loop autoPlay playsInline className="h-full w-full object-cover" />
-          ) : project.mediaType === 'audio' ? (
-            <div className="flex h-full w-full items-center justify-center bg-navy-900 text-white">
-              <span className="text-4xl">🎵</span>
-            </div>
+          {isVideo ? (
+            <video 
+              src={project.image} 
+              muted 
+              loop 
+              playsInline 
+              autoPlay
+              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.05]"
+            />
           ) : project.image ? (
             <img
               src={project.image}
@@ -101,10 +110,9 @@ export function ProjectTile({ project, onMediaClick }) {
             </div>
           )}
 
-          {/* Badge */}
-          {(project.mediaType === 'video' || project.mediaType === 'audio') && (
+          {isVideo && (
             <div className="absolute bottom-3 right-3 bg-navy-900/90 px-3 py-1.5 text-white rounded text-[10px] font-mono tracking-wider">
-              {project.mediaType === 'video' ? '▶ Vidéo' : '🎵 Audio'}
+              ▶ Vidéo
             </div>
           )}
         </div>

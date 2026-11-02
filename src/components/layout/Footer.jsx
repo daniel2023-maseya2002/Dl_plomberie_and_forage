@@ -50,6 +50,8 @@ export default function Footer() {
             <ul className="mt-5 grid grid-cols-2 gap-x-6 gap-y-2 text-sm text-white/85">
               <li><Link to="/" className="hover:text-white">Accueil</Link></li>
               <li><Link to="/realisations" className="hover:text-white">Réalisations</Link></li>
+              <li><Link to="/membres" className="hover:text-white">Équipe</Link></li>
+              <li><Link to="/blog" className="hover:text-white">Témoignages</Link></li>
               <li><a href="/#services" className="hover:text-white">Services</a></li>
               <li><a href="/#contact" className="hover:text-white">Contact</a></li>
               <li><a href={SITE.instagram.url} target="_blank" rel="noreferrer" className="hover:text-white">Instagram</a></li>
